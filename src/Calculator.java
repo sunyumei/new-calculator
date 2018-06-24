@@ -31,8 +31,8 @@ public class Calculator extends JFrame{
         p.setLayout(new GridLayout(8,6,0,0));
 
         p.setBounds(0,100,250,200);
-        String[] num={"(",")","AC","/","7","8","9","*","4","5","6","-","1","2","3","+","0",".","DEL","=","abs","int","sin","cos","tan","1/x","sqrt","x^2","x^3","ln"};
-        
+        String[] num={"(",")","AC","/","7","8","9","*","4","5","6","-","1","2","3","+","0",".","DEL","=","abs","int","sin","cos","tan","1/x","sqrt","x^2","x^3","ln","e^x"};
+
         JButton[] jb=new JButton[num.length];
         for(int i=0;i<num.length;i++){
             jb[i]=new JButton(num[i]);
@@ -118,6 +118,11 @@ public class Calculator extends JFrame{
             double x= Double.valueOf(jt.getText());
             jt.setText("");
             jt.append(String.valueOf(Math.log(x)));
+        });
+        jb[30].addActionListener(e->{
+            double x= Double.valueOf(jt.getText());
+            jt.setText("");
+             jt.append(String.valueOf(Math.pow(Math.E,x)));
         });
         //禁止文本域的enter换行
         KeyStroke enter = KeyStroke.getKeyStroke("ENTER");
