@@ -20,7 +20,7 @@ public class Calculator extends JFrame{
 
 
         JTextArea jt=new JTextArea(100,100);
-        jt.setFont(new Font("Aria",Font.BOLD,32));
+        jt.setFont(new Font("Aria",Font.BOLD,34));
         jt.setLineWrap(true);
         JScrollPane sp=new JScrollPane(jt);
         jt.setCaretPosition(jt.getDocument().getLength());
