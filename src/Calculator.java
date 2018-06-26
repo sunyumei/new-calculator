@@ -3,9 +3,6 @@ import java.awt.*;
 import java.util.HashMap;
 import java.util.Stack;
 
-/**
- * Created by 28713 on 2016/9/11.
- */
 public class Calculator extends JFrame{
 
     public  Stack<Double> operandStack= new Stack<>();
@@ -15,48 +12,61 @@ public class Calculator extends JFrame{
 
         setTitle("计算器");
         setSize(266,340);
-        Container c=getContentPane();
+        //# 因为JFrame只是一个框架，用Content Pane来装窗口能显示的所有组件
+        //此方法先将组件放入容器中，再置为JFrame面板
+        Container c=getContentPane();  
         c.setLayout(null);
 
 
         JTextArea jt=new JTextArea(100,100);
         jt.setFont(new Font("Aria",Font.BOLD,34));
         jt.setLineWrap(true);
+        // JScrollPane是带有滚动条的面板，是一种容器，只能添加一个组件
         JScrollPane sp=new JScrollPane(jt);
         jt.setCaretPosition(jt.getDocument().getLength());
+        // 相对于容器最左边的距离，相对于容器最上面的距离，宽高
         sp.setBounds(0,0,250,100);
         c.add(sp);
 
         JPanel p=new JPanel();
+        // 创建具有指定行数、列数以及组件水平、纵向一定间距的网格布局。
         p.setLayout(new GridLayout(8,6,0,0));
-
+        
+        // 确定位置以及宽高
         p.setBounds(0,100,250,200);
         String[] num={"(",")","AC","/","7","8","9","*","4","5","6","-","1","2","3","+","0",".","DEL","=","abs","int","sin","cos","tan","1/x","sqrt","x^2","x^3","ln","e^x"};
         
         JButton[] jb=new JButton[num.length];
         for(int i=0;i<num.length;i++){
+        	
+        	// 给每个按钮附上对应的符号
             jb[i]=new JButton(num[i]);
             p.add(jb[i]);
         }
         c.add(p);
-
+        
+        
+        // 添加监听器并对一元操作进行运算
         for(int i=0;i<18;i++){
             if(i!=2){
                 final int j=i;
                 jb[i].addActionListener(e-> jt.append(num[j]));
             }
         }
-
+        // 清零
         jb[2].addActionListener(e->{
             jt.setText("");
             operandStack.clear();
             operatorStack.clear();
         });
+        
+        // 删除操作，获取子字符串
         jb[18].addActionListener(e->{
             try{
                 jt.setText(jt.getText().substring(0,jt.getText().length()-1));
             }catch(Exception ignored) { }//忽略这个异常   IDEA就是好用！！！
         });
+        // “=”时，以字符串形式输出界面上的结果，并自动加"#"
         jb[19].addActionListener(e->{
             try{
                 double x= calculateString(jt.getText()+"#");
@@ -69,6 +79,8 @@ public class Calculator extends JFrame{
                     jt.setText(ex.getMessage());
             }
         });
+        
+        // 一些基本的一元操作
         jb[20].addActionListener(e->{
             double x= Double.valueOf(jt.getText());
             jt.setText("");
@@ -129,8 +141,6 @@ public class Calculator extends JFrame{
         jt.getInputMap().put(enter, "none");
 
         this.getRootPane().setDefaultButton(jb[19]);
-        //太累！不想研究了
-        //下面的，不知道主体是什么，当只有焦点在那个主体上才会响应，哎，不知道怎么弄。
         /*c.addKeyListener(new KeyAdapter() {
             @Override
             public void keyPressed(KeyEvent e) {
@@ -142,8 +152,6 @@ public class Calculator extends JFrame{
                 }
             }
         });*/
-        //不知道为什么响应不了键盘事件？？？
-        //不知道为什么下面的的这个不行？？？
 
         setVisible(true);
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
@@ -166,10 +174,6 @@ public class Calculator extends JFrame{
             e = d * c;
             operandStack.push(e);
         }
-//        if (b.equals("abs")) {
-//            e = Math.abs(c);
-//            operandStack.push(e);
-//        }
         if (b.equals("/")) {
             if(c==0)
                 throw new ArithmeticException("DivideByZero!");//不可修改为Exception
@@ -178,7 +182,8 @@ public class Calculator extends JFrame{
             operandStack.push(e);
         }
     }
-
+    
+    // 主要处理优先级
     public Double calculateString(String text){
         HashMap<String,Integer> precede=new HashMap<>();
         precede.put("(",0);

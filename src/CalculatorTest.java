@@ -1,5 +1,7 @@
 import static org.junit.Assert.*;
 
+import java.util.Stack;
+
 import org.junit.Test;
 
 public class CalculatorTest {
@@ -15,24 +17,31 @@ public class CalculatorTest {
 	@Test
 	public void testCalculate() {
 //		fail("Not yet implemented");
-		String b = "+";
-        double c = 3.5;
-        double d = 4.5;
-//        result = calculator.calculate();
-        assertEquals(8,calculator.operandStack.pop(),0);
-		
-	}
-
-	@Test
-	public void testCalculateString() {
-//		fail("Not yet implemented");
 //		String b = "+";
 //        double c = 3.5;
 //        double d = 4.5;
-		System.out.println(1111111);
-//        double result = calculator.operandStack.pop();
-//        System.out.println(1111111);
-        assertEquals(3.5,calculator.calculateString("3.5+4.5"),0);
+		calculator.operandStack.push(3.5);
+		calculator.operatorStack.push("+");
+		calculator.operandStack.push(4.5);
+        calculator.calculate();
+//		calculate();
+        assertEquals(8,calculator.operandStack.pop(),0);
+//        System.out.println("成功运行结果为：" + calculator.operandStack.pop());
+        
+        
+        calculator.operandStack.push(7.0);
+		calculator.operatorStack.push("*");
+		calculator.operandStack.push(3.0);
+        calculator.calculate();
+//		calculate();
+        assertEquals(2.0,calculator.operandStack.pop(),0);
+//        
+        calculator.operandStack.push(7.0);
+		calculator.operatorStack.push("/");
+		calculator.operandStack.push(0.0);
+        calculator.calculate();
+//		calculate();
+        System.out.println("成功运行结果为：" + calculator.operandStack.pop());
+		
 	}
-
 }
